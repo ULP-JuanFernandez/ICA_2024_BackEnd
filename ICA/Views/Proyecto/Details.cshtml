@@ -1,0 +1,46 @@
+﻿@model ICA.Models.Proyecto
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Detalle Proyecto</h1>
+<hr />
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 mb-8">
+            <div class="card">
+                @{
+                    var videoId = Html.DisplayFor(model => model.VideoId);
+                    var videoUrl = $"https://www.youtube.com/watch?v={videoId}";
+                }
+                <div class="grid-item">
+                    <div class="video">
+                        <iframe src="https://www.youtube.com/embed/@videoId"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen
+                                title="Video: @videoId"
+                                class="w-100">
+                        </iframe>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title text-center">@Html.DisplayFor(model => model.Nombre)</h5>
+                    <p class="card-text"><strong>Descripcion:</strong> @Html.DisplayFor(model => model.Descripcion)</p>
+                    <p class="card-text"><strong>Creador:</strong> @Html.DisplayFor(model => model.Creador)</p>
+                    <p class="card-text"><strong>Fecha:</strong> @Html.DisplayFor(model => model.Fecha)</p>
+                    <p class="card-text"><strong>Genero:</strong> @Html.DisplayFor(model => model.Genero.Nombre)</p>
+                    <p class="card-text"><strong>Etiqueta:</strong> @Html.DisplayFor(model => model.Etiqueta.Nombre)</p>
+                    
+                </div>
+                <div class="card-footer text-muted text-center">
+                    <div class="form-group text-center">
+                        @Html.ActionLink("Editar", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary btn-sm" })
+                        <a asp-action="Index" class="btn btn-secondary btn-sm">Volver a la lista</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

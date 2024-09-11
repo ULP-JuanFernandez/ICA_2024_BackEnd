@@ -1,0 +1,55 @@
+﻿@model IEnumerable<ICA.Models.Slide>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<style>
+    .card-text.description {
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* Número máximo de líneas a mostrar */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+</style>
+<h1>
+    Slide
+</h1>
+<hr />
+<div class="container mt-4">
+    <p>
+        <a class="btn btn-primary btn-sm" asp-action="Create">Crear</a>
+    </p>
+
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="@item.Imagen" class="card-img-top" alt="Image for @item.Nombre">
+                    <div class="card-body">
+                        <h5 class="card-title">@Html.DisplayFor(modelItem => item.Nombre)</h5>
+
+                        <p class="card-text description"><strong>Descripcion:</strong> @Html.DisplayFor(modelItem => item.Descripcion)</p>
+                       @*  <p class="card-text"><strong>Creado:</strong> @Html.DisplayFor(modelItem => item.FechaCreacion)</p>
+                        <p class="card-text"><strong>Modificado:</strong> @Html.DisplayFor(modelItem => item.FechaUltimaModificacion)</p> *@
+                        <p class="card-text"><strong>Order:</strong> @Html.DisplayFor(modelItem => item.Orden)</p>
+                        <p class="card-text"><strong>Estado:</strong> @Html.DisplayFor(modelItem => item.EstadoDescription)</p>
+                        
+                    </div>
+                    <div class="card-footer text-muted">
+                        <div class="form-group text-center">
+                            @Html.ActionLink("Editar", "Edit", new { id = item.Id }, new { @class = "btn btn-primary btn-sm" })
+                            @Html.ActionLink("Detalle", "Details", new { id = item.Id }, new { @class = "btn btn-info btn-sm" }) @* |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger btn-sm" }) *@
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+

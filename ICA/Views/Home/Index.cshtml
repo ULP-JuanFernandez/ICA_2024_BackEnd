@@ -1,0 +1,177 @@
+﻿@model IEnumerable<ICA.Models.Slide>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<style>
+    .list-inline.position-absolute {
+        position: absolute;
+        top: 10px; /* Ajusta según el diseño deseado */
+        left: 10px; /* Ajusta según el diseño deseado */
+        z-index: 10; /* Asegura que esté sobre la imagen */
+        background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente para visibilidad */
+        border-radius: 5px; /* Bordes redondeados opcionales */
+        width:100%;
+    }
+
+    .list-inline-item a {
+        color: #fff; /* Color del texto de los enlaces */
+        text-decoration: none; /* Sin subrayado en los enlaces */
+    }
+
+    .list-inline-item a:hover {
+        text-decoration: underline; /* Subrayado al pasar el cursor */
+    }
+
+    .text-light {
+        color: #fff !important; /* Asegura que el texto de los enlaces sea visible sobre la imagen */
+    }
+
+    .card-body {
+        position: relative; /* Asegúrate de que el card-body tenga una posición relativa para que los elementos absolutos se posicionen correctamente */
+        overflow: hidden; /* Oculta cualquier contenido que sobresalga del card-body */
+        height: 200px; /* Ajusta la altura fija según tus necesidades */
+    }
+
+    .img-fixed-size {
+        position: absolute; /* Posiciona la imagen de manera absoluta dentro del card-body */
+        top: 0;
+        left: 0;
+        width: 100%; /* Ancho al 100% del contenedor */
+        height: 100%; /* Alto al 100% del contenedor */
+        object-fit: cover; /* Asegura que la imagen cubra el área del contenedor sin distorsionarse */
+    }
+</style>
+
+
+<div class="container mt-4">
+    <div class="row"> 
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="card-title text-center">Slide</h6>
+                </div>
+                <div class="card-body-fled">
+                    <div id="hero" class="carousel slide">
+                        <div class="carousel-indicators">
+                            @if (Model != null)
+                            {
+                                for (int i = 0; i < Model.Count(); i++)
+                                {
+                                    <button type="button" data-bs-target="#hero" data-bs-slide-to="@i" class="@(i == 0 ? "active" : "")" aria-current="@(i == 0 ? "true" : "false")" aria-label="Slide @(i + 1)"></button>
+                                }
+                            } 
+                        </div>
+                        <div class="carousel-inner">
+                            @if (Model != null && Model.Any())
+                            {
+                                var isActive = true;
+                                foreach (var slide in Model)
+                                {
+                                    <div class="carousel-item @(isActive ? "active" : "")">
+                                        <img src="@slide.Imagen" class="d-block w-100" alt="@slide.Nombre">
+                                        <div class="carousel-caption d-none d-md-block">
+                                            <h6>@slide.Nombre</h6>
+                                            <p class="text-truncate">@slide.Descripcion</p>
+                                        </div>
+                                    </div>
+                                    isActive = false;
+                                }
+                            }
+                            else
+                            {
+                                var slide = Model;
+                                <div class="carousel-item active" style="background-color:darkgray">
+                                    <img src="~/img/sliders/NoImagen.png" class="d-block w-100 " alt="Placeholder">
+                                    <div class="carousel-caption d-none d-md-block">
+                                        <h5>No hay slides disponibles</h5>
+                                        <p>No hay contenido para mostrar.</p>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#hero" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#hero" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button> 
+                    </div>
+                </div>
+                <div class="card-footer text-muted text-center">
+                    <a asp-controller="Sliders" asp-action="Index" title="Más" class="btn btn-primary btn-sm">
+                        Ver más
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card relative-container">
+                <div class="card-header">
+                    <h6 class="card-title text-center">Producción y Realización Audiovisual</h6>
+                </div>
+                <div class="card-body position-relative p-0">
+                    <!-- Lista de enlaces sobre la imagen -->
+                    <ul class="list-inline position-absolute top-0 start-0 p-3">
+                        <li class="list-inline-item">
+                            <a asp-area="" asp-controller="Genero" asp-action="Index" class="text-light">Genero</a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a asp-area="" asp-controller="Genero" asp-action="Index" class="text-light">Etiqueta</a>
+                        </li>
+                    </ul>
+                    <!-- Imagen -->
+                    <img src="~/img/card/Producción y Realización Audiovisual.jfif" class="img-fixed-size" alt="Imagen de fondo">
+                </div>
+                <div class="card-footer text-muted text-center">
+                    <a asp-controller="Proyecto" asp-action="Index" title="Más" class="btn btn-primary btn-sm">
+                        Ver más
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="card-title text-center">Diseño Digital y Videojuegos</h6>
+                </div>
+                <div class="card-body-fled">
+                    <img src="~/img/sliders/fondo-azul.jpg" class="d-block w-100" alt="Placeholder">
+                    @* <p class="card-text"><strong>Genero</strong> </p>
+                    <p class="card-text"><strong>Etiqueta</strong> </p> *@   
+                </div>
+                <div class="card-footer text-muted">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="card-title text-center">Comunicación y Medios</h6>
+                </div>
+                <div class="card-body-fled">
+                    <img src="~/img/sliders/fondo-azul.jpg" class="d-block w-100" alt="Placeholder">
+                    @* <p class="card-text"><strong>Genero</strong> </p> *@
+                </div>
+                <div class="card-footer text-muted">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="card-title text-center">Tecnicatura en Publicidad</h6>
+                </div>
+                <div class="card-body-fled">
+                    <img src="~/img/sliders/fondo-azul.jpg" class="d-block w-100" alt="Placeholder">
+                <div class="card-footer text-muted">
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>

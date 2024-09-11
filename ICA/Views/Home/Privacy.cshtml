@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Privacy Policy";
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>Use this page to detail your site's privacy policy.</p>
+<form>
+    <label for="eleccion">Elige una opción:</label>
+    <!-- Select básico -->
+    <select id="eleccion" name="eleccion" placeholder="Selecciona una opción...">
+        <option value="">Selecciona una opción...</option>
+        <option value="opcion1">Opción 1</option>
+        <option value="opcion2">Opción 2</option>
+        <option value="opcion3">Opción 3</option>
+        <option value="opcion4">Opción 4</option>
+    </select>
+</form>
+
+<!-- Incluir el JS de Choices.js -->
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+<script>
+    // Inicializar Choices.js en el elemento select
+    const element = document.getElementById('eleccion');
+    const choices = new Choices(element, {
+        searchEnabled: true,
+        itemSelectText: '',
+        placeholder: true,
+        placeholderValue: 'Selecciona una opción...'
+    });
+</script>
