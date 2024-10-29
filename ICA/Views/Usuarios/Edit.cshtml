@@ -1,0 +1,74 @@
+﻿@model ICA.Models.Usuario
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+
+<h1 class="text-center">Editar</h1>
+<h3 class="text-center">Etiqueta</h3>
+<hr />
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <form asp-action="Edit">
+                    <div class="card-body">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="Nombre" class="control-label"></label>
+                            <input asp-for="Nombre" class="form-control" />
+                            <span asp-validation-for="Nombre" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Apellido" class="control-label"></label>
+                            <input asp-for="Apellido" class="form-control" />
+                            <span asp-validation-for="Apellido" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Correo" class="control-label"></label>
+                            <input asp-for="Correo" class="form-control" />
+                            <span asp-validation-for="Correo" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Rol" class="control-label"></label>
+                            <select asp-for="Rol" class="form-control">
+                                <option value="admin">Admin</option>
+                                <option value="usuario">Usuario</option>
+                                <option value="invitado">Invitado</option>
+                            </select>
+                            <span asp-validation-for="Rol" class="text-danger"></span>
+                        </div>
+                       
+                        <div class="form-group">
+                            <label class="control-label">Estado</label>
+                            <div>
+                                <label>
+                                   
+                                    <input asp-for="Estado" type="radio" value="1" checked/> Activo
+                                </label>
+                                <label>
+                                    <input asp-for="Estado" type="radio" value="0" /> Inactivo
+                                </label>
+                            </div>
+                            <span asp-validation-for="Estado" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="card-footer text-muted mt-3">
+                        <div class="form-group text-center ps-2">
+                            <input type="submit" value="Guardar" class="btn btn-primary btn-sm" />
+                            <a asp-action="Index" class="btn btn-secondary btn-sm">Volver a la lista</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

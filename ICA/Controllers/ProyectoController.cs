@@ -11,8 +11,8 @@ namespace ICA.Controllers
         private readonly RepositorioProyecto _repositorio;
         private readonly RepositorioGenero rGenero;
         private readonly RepositorioTecnicatura rTecnicatura;
-        private readonly RepositorioEtiquetas rEtiqueta;
-        public ProyectoController(IRepositorioProyecto irepositorio, RepositorioProyecto repositorio, RepositorioGenero g, RepositorioTecnicatura t, RepositorioEtiquetas e)
+        private readonly RepositorioEtiqueta rEtiqueta;
+        public ProyectoController(IRepositorioProyecto irepositorio, RepositorioProyecto repositorio, RepositorioGenero g, RepositorioTecnicatura t, RepositorioEtiqueta e)
         {
             _irepositorio = irepositorio;
             _repositorio = repositorio;

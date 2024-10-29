@@ -11,14 +11,31 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectio
 
 
 // Registrar la implementación del servicio IRepositorioInfo
-builder.Services.AddScoped<IRepositorioGenero, RepositorioGenero>();
-builder.Services.AddScoped<RepositorioGenero, RepositorioGenero>();
 
-builder.Services.AddScoped<IRepositorioEtiquetas, RepositorioEtiquetas>();
-builder.Services.AddScoped<RepositorioEtiquetas, RepositorioEtiquetas>();
 
 builder.Services.AddScoped<IRepositorioTecnicatura, RepositorioTecnicatura>();
 builder.Services.AddScoped<RepositorioTecnicatura, RepositorioTecnicatura>();
+
+builder.Services.AddScoped<IRepositorioMateria, RepositorioMateria>();
+builder.Services.AddScoped<RepositorioMateria, RepositorioMateria>();
+
+builder.Services.AddScoped<IRepositorioGenero, RepositorioGenero>();
+builder.Services.AddScoped<RepositorioGenero, RepositorioGenero>();
+
+builder.Services.AddScoped<IRepositorioEtiqueta, RepositorioEtiqueta>();
+builder.Services.AddScoped<RepositorioEtiqueta, RepositorioEtiqueta>();
+
+builder.Services.AddScoped<IRepositorioPelicula, RepositorioPelicula>();
+builder.Services.AddScoped<RepositorioPelicula, RepositorioPelicula>();
+
+builder.Services.AddScoped<IRepositorioJuego, RepositorioJuego>();
+builder.Services.AddScoped<RepositorioJuego, RepositorioJuego>();
+
+builder.Services.AddScoped<IRepositorioPublicidad, RepositorioPublicidad>();
+builder.Services.AddScoped<RepositorioPublicidad, RepositorioPublicidad>();
+
+builder.Services.AddScoped<IRepositorioComunicacion, RepositorioComunicacion>();
+builder.Services.AddScoped<RepositorioComunicacion, RepositorioComunicacion>();
 
 builder.Services.AddScoped<IRepositorioProyecto, RepositorioProyecto>();
 builder.Services.AddScoped<RepositorioProyecto, RepositorioProyecto>();
@@ -26,6 +43,8 @@ builder.Services.AddScoped<RepositorioProyecto, RepositorioProyecto>();
 builder.Services.AddScoped<IRepositorioSliders, RepositorioSliders>();
 builder.Services.AddScoped<RepositorioSliders, RepositorioSliders>();
 
+builder.Services.AddScoped<IRepositorioUsuario, RepositorioUsuario>();
+builder.Services.AddScoped<RepositorioUsuario, RepositorioUsuario>();
 // Otros servicios
 builder.Services.AddControllersWithViews();
 

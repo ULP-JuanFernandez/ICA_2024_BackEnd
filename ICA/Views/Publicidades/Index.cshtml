@@ -1,0 +1,90 @@
+﻿@model IEnumerable<ICA.Models.Publicidad>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<section class="cabe">
+    <h1>Lista de Publicidad</h1>
+
+    <p>
+        <a class="btn btn-primary" asp-action="Create">Crear</a>
+    </p>
+</section>
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger" id="errorMessage">
+        @TempData["Error"]
+    </div>
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success" id="successMessage">
+        @TempData["SuccessMessage"]
+    </div>
+}
+<section>
+    <table class="table table-striped table-bordered" id="peliculaTable">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.First().Titulo)</th>
+                <th>@Html.DisplayNameFor(model => model.First().Creador)</th>
+                <th>@Html.DisplayNameFor(model => model.First().Fecha)</th>
+                <th>@Html.DisplayNameFor(model => model.First().Descripcion)</th>
+                <th>@Html.DisplayNameFor(model => model.First().Integrantes)</th>
+
+                <th>@Html.DisplayNameFor(model => model.First().Genero)</th>
+                <th>@Html.DisplayNameFor(model => model.First().Materia)</th>
+                <th>@Html.DisplayNameFor(model => model.First().Etiqueta)</th>
+                <th>@Html.DisplayNameFor(model => model.First().Estado)</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Titulo)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Creador)</td>
+                    <td>
+                        @if (item.Fecha.HasValue)
+                        {
+                            @item.Fecha.Value.ToShortDateString()
+                        }
+                        else
+                        {
+                            @:N/A
+                        }
+                    </td>
+                    <td class="truncate">@Html.DisplayFor(modelItem => item.Descripcion)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Integrantes)</td>
+
+                    <td>@Html.DisplayFor(modelItem => item.Genero.Nombre)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Materia.Nombre)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Etiqueta.Nombre)</td>
+                    <td class="text-center">
+                        @if (item.Estado == 1)
+                        {
+                            <span class="badge bg-success">Activo</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Inactivo</span>
+                        }
+                    </td>
+                    <td align="center">
+                        <a asp-controller="Publicidades" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a asp-controller="Publicidades" asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">
+                            <i class="bi bi-eye"></i>
+                        </a>
+                        <a asp-controller="Publicidades" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</section>

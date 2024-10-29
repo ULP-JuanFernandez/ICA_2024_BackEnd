@@ -5,7 +5,7 @@ namespace ICA.Models
     public class Genero
     {
         [Key]
-        [Display(Name = "Código Int.")]
+        [Display(Name = "Código")]
         public int Id { get; set; }
 
         [Required(ErrorMessage = "El campo Nombre es obligatorio.")]
@@ -15,5 +15,9 @@ namespace ICA.Models
         
         [StringLength(500, ErrorMessage = "El campo Descripción no puede tener más de 500 caracteres.")]
         public string? Descripcion { get; set; }
+
+        public byte Estado { get; set; }
+        public int TecnicaturaId { get; set; }
+        public Tecnicatura? Tecnicatura { get; set; }
     }
 }

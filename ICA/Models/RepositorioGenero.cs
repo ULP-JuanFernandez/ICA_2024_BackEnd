@@ -22,8 +22,8 @@ namespace ICA.Models
             }
 
             const string sql = @"
-            INSERT INTO Generos (Nombre, Descripcion)
-            VALUES (@nombre, @descripcion);
+            INSERT INTO Genero (Nombre, Descripcion, Estado, TecnicaturaId)
+            VALUES (@nombre, @descripcion, @estado, @tecnicaturaId);
             SELECT SCOPE_IDENTITY();";
 
             using (var connection = new SqlConnection(connectionString))
@@ -32,6 +32,8 @@ namespace ICA.Models
                 command.CommandType = CommandType.Text;
                 command.Parameters.AddWithValue("@nombre", entidad.Nombre);
                 command.Parameters.AddWithValue("@descripcion", entidad.Descripcion);
+                command.Parameters.AddWithValue("@estado", entidad.Estado);
+                command.Parameters.AddWithValue("@tecnicaturaId", entidad.TecnicaturaId);
 
                 connection.Open();
 
@@ -59,7 +61,7 @@ namespace ICA.Models
             {
                 using (var connection = new SqlConnection(connectionString))
                 {
-                    string sql = @"DELETE FROM Generos WHERE Id = @id";
+                    string sql = @"DELETE FROM Genero WHERE Id = @id";
 
                     using (var command = new SqlCommand(sql, connection))
                     {
@@ -103,8 +105,8 @@ namespace ICA.Models
             {
                 using (var connection = new SqlConnection(connectionString))
                 {
-                    const string sql = "UPDATE Generos SET " +
-                                       "Nombre = @nombre, Descripcion = @descripcion " +
+                    const string sql = "UPDATE Genero SET " +
+                                       "Nombre = @nombre, Descripcion = @descripcion, Estado = @estado, TecnicaturaId = @tecnicaturaId " +
                                        "WHERE Id = @id";
 
                     using (var command = new SqlCommand(sql, connection))
@@ -112,6 +114,8 @@ namespace ICA.Models
                         // Usar AddWithValue con cuidado: asegúrate de que el tipo de datos sea correcto
                         command.Parameters.AddWithValue("@nombre", entidad.Nombre);
                         command.Parameters.AddWithValue("@descripcion", entidad.Descripcion);
+                        command.Parameters.AddWithValue("@estado", entidad.Estado);
+                        command.Parameters.AddWithValue("@tecnicaturaId", entidad.TecnicaturaId);
                         command.Parameters.AddWithValue("@id", entidad.Id);
 
                         command.CommandType = CommandType.Text;
@@ -149,8 +153,9 @@ namespace ICA.Models
             {
                 using (var connection = new SqlConnection(connectionString))
                 {
-                    const string sql = @"SELECT Id, Nombre, Descripcion
-                                 FROM Generos";
+                    const string sql = @"SELECT g.Id, g.Nombre, g.Descripcion, g.Estado, g.TecnicaturaId, t.Nombre as TecnicaturaNombre
+                                         FROM Genero g
+                                         INNER JOIN Tecnicatura t ON t.Id = g.TecnicaturaId";
 
                     using (var command = new SqlCommand(sql, connection))
                     {
@@ -166,7 +171,72 @@ namespace ICA.Models
                                 {
                                     Id = reader.GetInt32(reader.GetOrdinal("Id")),
                                     Nombre = reader.GetString(reader.GetOrdinal("Nombre")),
-                                    Descripcion = reader.GetString(reader.GetOrdinal("Descripcion"))
+                                    Descripcion = reader.GetString(reader.GetOrdinal("Descripcion")),
+                                    Estado = reader.GetByte(reader.GetOrdinal("Estado")),
+                                    TecnicaturaId = reader.GetInt32(reader.GetOrdinal("TecnicaturaId")),
+                                    Tecnicatura = new Tecnicatura
+                                    {
+                                        Nombre = reader.IsDBNull(reader.GetOrdinal("TecnicaturaNombre")) ? null : reader.GetString(reader.GetOrdinal("TecnicaturaNombre"))
+                                    }
+                                };
+                                generos.Add(genero);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                // Maneja errores específicos de SQL aquí
+                // Log del error y/o manejar según la necesidad
+                // Por ejemplo: Logger.LogError(ex, "Error al obtener los géneros.");
+                throw new ApplicationException("Se produjo un error al intentar obtener los géneros.", ex);
+            }
+            catch (Exception ex)
+            {
+                // Maneja errores generales aquí
+                // Log del error y/o manejar según la necesidad
+                // Por ejemplo: Logger.LogError(ex, "Error inesperado.");
+                throw new ApplicationException("Se produjo un error inesperado.", ex);
+            }
+
+            return generos;
+        }
+        public IList<Genero> ObtenerTodos(int id)
+        {
+            var generos = new List<Genero>();
+
+            try
+            {
+                using (var connection = new SqlConnection(connectionString))
+                {
+                    const string sql = @"SELECT g.Id, g.Nombre, g.Descripcion, g.Estado, g.TecnicaturaId, t.Nombre as TecnicaturaNombre
+                                         FROM Genero g
+                                         INNER JOIN Tecnicatura t ON t.Id = g.TecnicaturaId
+                                         WHERE TecnicaturaId = @id";
+
+                    using (var command = new SqlCommand(sql, connection))
+                    {
+                        command.Parameters.AddWithValue("@id", id);
+                        command.CommandType = CommandType.Text;
+
+                        connection.Open();
+
+                        using (var reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                var genero = new Genero
+                                {
+                                    Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                    Nombre = reader.GetString(reader.GetOrdinal("Nombre")),
+                                    Descripcion = reader.GetString(reader.GetOrdinal("Descripcion")),
+                                    Estado = reader.GetByte(reader.GetOrdinal("Estado")),
+                                    TecnicaturaId = reader.GetInt32(reader.GetOrdinal("TecnicaturaId")),
+                                    Tecnicatura = new Tecnicatura
+                                    {
+                                        Nombre = reader.IsDBNull(reader.GetOrdinal("TecnicaturaNombre")) ? null : reader.GetString(reader.GetOrdinal("TecnicaturaNombre"))
+                                    }
                                 };
                                 generos.Add(genero);
                             }
@@ -194,34 +264,65 @@ namespace ICA.Models
 
 
 
+
         public Genero ObtenerPorId(int id)
         {
-            Genero entidad = null;
-            using (var connection = new SqlConnection(connectionString))
+            // Validación del parámetro id
+            if (id <= 0)
             {
-                string sql = @$"
-					SELECT {nameof(Genero.Id)}, Nombre, Descripcion
-                    FROM Generos
-					WHERE {nameof(Genero.Id)}=@id";
-                using (SqlCommand command = new SqlCommand(sql, connection))
+                throw new ArgumentException("El identificador debe ser un valor positivo.", nameof(id));
+            }
+
+            Genero genero = null;
+            string query = @"SELECT g.Id, g.Nombre, g.Descripcion, g.Estado, g.TecnicaturaId,
+                             t.Nombre AS TecnicaturaNombre
+                     FROM Genero g
+                     INNER JOIN Tecnicatura t ON t.Id = g.TecnicaturaId
+                     WHERE g.Id = @id";
+
+            try
+            {
+                using (var connection = new SqlConnection(connectionString))
+                using (var command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.Add("@id", SqlDbType.Int).Value = id;
+                    command.Parameters.AddWithValue("@id", id);
                     command.CommandType = CommandType.Text;
+
                     connection.Open();
-                    var reader = command.ExecuteReader();
-                    if (reader.Read())
+
+                    using (var reader = command.ExecuteReader())
                     {
-                        entidad = new Genero
+                        if (reader.Read())
                         {
-                            Id = reader.GetInt32(nameof(Genero.Id)),
-                            Nombre = reader.GetString("Nombre"),
-                            Descripcion = reader.GetString("Descripcion"),
-                        };
+                            genero = new Genero
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                Nombre = reader.GetString(reader.GetOrdinal("Nombre")),
+                                Descripcion = reader.IsDBNull(reader.GetOrdinal("Descripcion")) ? null : reader.GetString(reader.GetOrdinal("Descripcion")),
+                                Estado = reader.GetByte(reader.GetOrdinal("Estado")),
+                                TecnicaturaId = reader.GetInt32(reader.GetOrdinal("TecnicaturaId")),
+                                Tecnicatura = new Tecnicatura
+                                {
+                                    Nombre = reader.GetString(reader.GetOrdinal("TecnicaturaNombre"))
+                                },
+
+                            };
+                        }
                     }
-                    connection.Close();
                 }
             }
-            return entidad;
+            catch (SqlException ex)
+            {
+                // Error relacionado con la base de datos
+                throw new ApplicationException("Error al acceder a la base de datos para obtener la materia.", ex);
+            }
+            catch (Exception ex)
+            {
+                // Error general
+                throw new ApplicationException("Se produjo un error inesperado al obtener la materia.", ex);
+            }
+
+            return genero;
         }
 
     }

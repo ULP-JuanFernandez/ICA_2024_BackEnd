@@ -1,19 +1,20 @@
 ﻿using ICA.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ICA.Controllers
 {
-    public class GeneroController : Controller
+    public class TecnicaturasController : Controller
     {
-        private readonly IRepositorioGenero _irepositorio;
-        private readonly RepositorioGenero _repositorio;
+        private readonly IRepositorioTecnicatura _irepositorio;
+        private readonly RepositorioTecnicatura _repositorio;
 
-        public GeneroController(IRepositorioGenero irepositorio, RepositorioGenero repositorio)
+        public TecnicaturasController(IRepositorioTecnicatura irepositorio, RepositorioTecnicatura repositorio)
         {
             _irepositorio = irepositorio;
             _repositorio = repositorio;
         }
-        // GET: GeneroController
+        // GET: TecnicaturasController
         public ActionResult Index()
         {
             var lista = _irepositorio.ObtenerTodos();
@@ -21,66 +22,56 @@ namespace ICA.Controllers
             return View(lista);
         }
 
-        // GET: GeneroController/Details/5
+        // GET: TecnicaturasController/Details/5
         public ActionResult Details(int id)
+        {
+            var entidad = _irepositorio.ObtenerPorId(id);
+
+            return View(entidad);
+        }
+
+        // GET: TecnicaturasController/Create
+        public ActionResult Create()
         {
             return View();
         }
 
-        // GET: GeneroController/Create
-        public ActionResult Create()
-        {
-            try
-            {
-                ViewBag.Generos = _irepositorio.ObtenerTodos();
-                return View();
-            }
-            catch (Exception ex)
-            {
-                // Registra el error y muestra una vista amigable para el usuario
-                // Aquí podrías registrar el error en un log
-                ModelState.AddModelError(string.Empty, "Se produjo un error al intentar cargar la página de creación.");
-                return View(); // Opcionalmente, podrías redirigir a una vista de error genérica
-            }
-        }
-
-        // POST: GeneroController/Create
+        // POST: TecnicaturasController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Genero genero)
+        public ActionResult Create(Tecnicatura tecnicatura)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
                     // Intenta guardar el nuevo género
-                    _irepositorio.Alta(genero);
+                    _irepositorio.Alta(tecnicatura);
 
                     // Usa TempData para pasar el Id del nuevo género a la siguiente acción
                     TempData["SuccessMessage"] = "El género se creó correctamente.";
-                    TempData["Id"] = genero.Id;
+                    TempData["Id"] = tecnicatura.Id;
 
                     return RedirectToAction(nameof(Index));
                 }
                 else
                 {
-                    // Recarga la lista de géneros en caso de error de validación
-                    ViewBag.Generos = _irepositorio.ObtenerTodos();
-                    return View(genero);
+                    
+                    return View(tecnicatura);
                 }
             }
             catch (Exception ex)
             {
                 // Manejo del error: registra el error y muestra un mensaje amigable
                 // Aquí podrías registrar el error en un log
-                ModelState.AddModelError(string.Empty, "Se produjo un error al intentar guardar el género.");
-                ViewBag.Generos = _irepositorio.ObtenerTodos();
-                return View(genero);
+                ModelState.AddModelError(string.Empty, "Se produjo un error al intentar guardar la tecnicatura.");
+                
+                return View(tecnicatura);
             }
         }
 
-        // GET: GeneroController/Edit/5
-        public IActionResult Edit(int id)
+        // GET: TecnicaturasController/Edit/5
+        public ActionResult Edit(int id)
         {
             try
             {
@@ -97,18 +88,15 @@ namespace ICA.Controllers
             }
             catch (Exception ex)
             {
-                // Manejo de excepciones: registrar y mostrar un mensaje de error general
-                // Ejemplo de registro de error:
-                // _logger.LogError(ex, "Error al intentar cargar la entidad para edición.");
                 TempData["Error"] = "Se produjo un error al intentar cargar la entidad para edición.";
                 return RedirectToAction(nameof(Index));
             }
         }
 
-        // POST: Genero/Edit/5
+        // POST: TecnicaturasController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, Genero entidad)
+        public ActionResult Edit(int id, Tecnicatura entidad)
         {
             if (!ModelState.IsValid)
             {
@@ -146,24 +134,33 @@ namespace ICA.Controllers
             }
         }
 
-        // GET: GeneroController/Delete/5
-        public IActionResult Delete(int id)
+        // GET: TecnicaturasController/Delete/5
+        public ActionResult Delete(int id)
         {
-            var genero = _irepositorio.ObtenerPorId(id);
-
-            if (genero == null)
+            try
             {
-                TempData["Error"] = "No se encontró el género para eliminar.";
+                var entidad = _repositorio.ObtenerPorId(id);
+
+                if (entidad == null)
+                {
+                    // Retorna una respuesta 404 Not Found
+                    TempData["Error"] = "El elemento solicitado no existe.";
+                    return RedirectToAction(nameof(Index));
+                }
+
+                return View(entidad);
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "Se produjo un error al intentar cargar la entidad para eliminar.";
                 return RedirectToAction(nameof(Index));
             }
-
-            return View(genero);
         }
 
-        // POST: Genero/Delete/5
+        // POST: TecnicaturasController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
+        public ActionResult Delete(int id, IFormCollection collection)
         {
             try
             {
@@ -171,11 +168,11 @@ namespace ICA.Controllers
 
                 if (result > 0)
                 {
-                    TempData["Mensaje"] = "Género eliminado correctamente.";
+                    TempData["Mensaje"] = "Tecnicatura eliminado correctamente.";
                 }
                 else
                 {
-                    TempData["Mensaje"] = "No se encontró el género para eliminar.";
+                    TempData["Mensaje"] = "No se encontró la tecnicatura para eliminar.";
                 }
 
                 return RedirectToAction(nameof(Index));
@@ -185,10 +182,9 @@ namespace ICA.Controllers
                 // Registro del error puede ser implementado aquí (si se tiene un logger configurado)
                 // Logger.LogError(ex, "Error al eliminar el género con Id: {Id}", id);
 
-                TempData["Error"] = "Se produjo un error al intentar eliminar el género.";
+                TempData["Error"] = "Se produjo un error al intentar eliminar la tecnicatura.";
                 return RedirectToAction(nameof(Index));
             }
         }
     }
 }
-

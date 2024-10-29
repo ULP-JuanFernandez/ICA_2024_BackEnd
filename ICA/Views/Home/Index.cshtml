@@ -46,6 +46,7 @@
 
 <div class="container mt-4">
     <div class="row"> 
+        <!----------------------------------Slider---------------------------------->
         <div class="col-md-4 mb-4">
             <div class="card">
                 <div class="card-header">
@@ -102,12 +103,13 @@
                 </div>
                 <div class="card-footer text-muted text-center">
                     <a asp-controller="Sliders" asp-action="Index" title="Más" class="btn btn-primary btn-sm">
-                        Ver más
+                        Ver Lista
                     </a>
                 </div>
             </div>
         </div>
 
+        <!----------------Producción y Realización Audiovisual---------------------->
         <div class="col-md-4 mb-4">
             <div class="card relative-container">
                 <div class="card-header">
@@ -116,62 +118,122 @@
                 <div class="card-body position-relative p-0">
                     <!-- Lista de enlaces sobre la imagen -->
                     <ul class="list-inline position-absolute top-0 start-0 p-3">
+                        
                         <li class="list-inline-item">
-                            <a asp-area="" asp-controller="Genero" asp-action="Index" class="text-light">Genero</a>
+                            <a asp-area="" asp-controller="Etiquetas" asp-action="Index" class="text-light">Etiqueta</a>
+                        </li>
+                       
+                        <li class="list-inline-item">
+                            <a asp-area="" asp-controller="Materias" asp-action="Index" class="text-light">Materia</a>
                         </li>
                         <li class="list-inline-item">
-                            <a asp-area="" asp-controller="Genero" asp-action="Index" class="text-light">Etiqueta</a>
+                            <a asp-area="" asp-controller="Generos" asp-action="Index" class="text-light">Genero</a>
                         </li>
+                        
                     </ul>
                     <!-- Imagen -->
-                    <img src="~/img/card/Producción y Realización Audiovisual.jfif" class="img-fixed-size" alt="Imagen de fondo">
+                    <img src="~/img/card/Producción y Realización Audiovisual.jpg" class="img-fixed-size" alt="Imagen de fondo">
                 </div>
                 <div class="card-footer text-muted text-center">
-                    <a asp-controller="Proyecto" asp-action="Index" title="Más" class="btn btn-primary btn-sm">
-                        Ver más
+                    <a asp-controller="Peliculas" asp-action="Index" title="Más" class="btn btn-primary btn-sm">
+                        Ver Lista
                     </a>
                 </div>
             </div>
         </div>
 
+        <!---------------------Diseño Digital y Videojuegos------------------------->
         <div class="col-md-4 mb-4">
             <div class="card">
                 <div class="card-header">
                     <h6 class="card-title text-center">Diseño Digital y Videojuegos</h6>
                 </div>
-                <div class="card-body-fled">
-                    <img src="~/img/sliders/fondo-azul.jpg" class="d-block w-100" alt="Placeholder">
-                    @* <p class="card-text"><strong>Genero</strong> </p>
-                    <p class="card-text"><strong>Etiqueta</strong> </p> *@   
+                <div class="card-body position-relative p-0">
+                    <!-- Lista de enlaces sobre la imagen -->
+                    <ul class="list-inline position-absolute top-0 start-0 p-3">
+                        <li class="list-inline-item">
+                            <a asp-area="" asp-controller="Etiquetas" asp-action="Index" class="text-light">Etiqueta</a>
+                        </li>
+                       
+                        <li class="list-inline-item">
+                            <a asp-area="" asp-controller="Materias" asp-action="Index" class="text-light">Materia</a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a asp-area="" asp-controller="Generos" asp-action="Index" class="text-light">Genero</a>
+                        </li>
+                       
+                    </ul>
+                    <!-- Imagen -->
+                    <img src="~/img/card/Diseño_Digital_Videojuegos.jpg" class="img-fixed-size" alt="Imagen de fondo">
                 </div>
-                <div class="card-footer text-muted">
+                <div class="card-footer text-muted text-center">
+                    <a asp-controller="Juegos" asp-action="Index" title="Más" class="btn btn-primary btn-sm">
+                        Ver más
+                    </a>
                 </div>
             </div>
         </div>
+        <!---------------------Comunicación y Medios------------------------->
         <div class="col-md-4 mb-4">
             <div class="card">
                 <div class="card-header">
                     <h6 class="card-title text-center">Comunicación y Medios</h6>
                 </div>
-                <div class="card-body-fled">
-                    <img src="~/img/sliders/fondo-azul.jpg" class="d-block w-100" alt="Placeholder">
-                    @* <p class="card-text"><strong>Genero</strong> </p> *@
-                </div>
-                <div class="card-footer text-muted">
+                <div class="card-body position-relative p-0">
+                    <!-- Lista de enlaces sobre la imagen -->
+                    <ul class="list-inline position-absolute top-0 start-0 p-3">
+                        
+                        <li class="list-inline-item">
+                            <a asp-area="" asp-controller="Etiquetas" asp-action="Index" class="text-light">Etiqueta</a>
+                        </li>
+                       
+                        <li class="list-inline-item">
+                            <a asp-area="" asp-controller="Materias" asp-action="Index" class="text-light">Materia</a>
+                        </li>
+                    </ul>
+                    <!-- Imagen -->
+                    <img src="~/img/card/Comunicación y Medios.jpg" class="img-fixed-size" alt="Imagen de fondo">
+                </div>@* <p class="card-text"><strong>Genero</strong> </p> *@
+                
+                <div class="card-footer text-muted text-center">
+                    <a asp-controller="Comunicaciones" asp-action="Index" title="Más" class="btn btn-primary btn-sm">
+                        Ver Lista
+                    </a>
                 </div>
             </div>
         </div>
+        <!--------------------------------------Publicidad------------------------------------------->
         <div class="col-md-4 mb-4">
             <div class="card">
                 <div class="card-header">
-                    <h6 class="card-title text-center">Tecnicatura en Publicidad</h6>
+                    <h6 class="card-title text-center">Publicidad</h6>
                 </div>
-                <div class="card-body-fled">
-                    <img src="~/img/sliders/fondo-azul.jpg" class="d-block w-100" alt="Placeholder">
-                <div class="card-footer text-muted">
+                <div class="card-body position-relative p-0">
+                    <!-- Lista de enlaces sobre la imagen -->
+                    <ul class="list-inline position-absolute top-0 start-0 p-3">
+                        <li class="list-inline-item">
+                            <a asp-area="" asp-controller="Genero" asp-action="Index" class="text-light">Genero</a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a asp-area="" asp-controller="Etiquetas" asp-action="Index" class="text-light">Etiqueta</a>
+                        </li>
+                       
+                        <li class="list-inline-item">
+                            <a asp-area="" asp-controller="Materias" asp-action="Index" class="text-light">Materia</a>
+                        </li>
+                    </ul>
+                    <!-- Imagen -->
+                    <img src="~/img/card/Tecnicatura en Publicidad.jpg" class="img-fixed-size" alt="Imagen de fondo">
+                </div>@* <p class="card-text"><strong>Genero</strong> </p> *@
+
+                <div class="card-footer text-muted text-center">
+                    <a asp-controller="Publicidades" asp-action="Index" title="Más" class="btn btn-primary btn-sm">
+                        Ver Lista
+                    </a>
                 </div>
             </div>
         </div>
-    </div>
+        
+        
     </div>
 </div>
