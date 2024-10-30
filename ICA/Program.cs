@@ -2,17 +2,13 @@ using ICA.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
-//Configurar el contexto de la base de datos
+// Configurar el contexto de la base de datos
 builder.Services.AddDbContext<DbContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Registrar la implementación del servicio IRepositorioInfo
-
-
 builder.Services.AddScoped<IRepositorioTecnicatura, RepositorioTecnicatura>();
 builder.Services.AddScoped<RepositorioTecnicatura, RepositorioTecnicatura>();
 
@@ -45,22 +41,24 @@ builder.Services.AddScoped<RepositorioSliders, RepositorioSliders>();
 
 builder.Services.AddScoped<IRepositorioUsuario, RepositorioUsuario>();
 builder.Services.AddScoped<RepositorioUsuario, RepositorioUsuario>();
+
+// Configuración de autenticación
+builder.Services.AddAuthentication("Cookies")
+    .AddCookie("Cookies", options =>
+    {
+        options.LoginPath = "/Usuarios/Login"; // Ajusta según tu ruta
+        // Otras configuraciones pueden ir aquí
+    });
+
 // Otros servicios
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-
-
 app.UseHttpsRedirection();
-
-app.UseRouting();
-
-app.UseAuthorization();
-
-
 app.UseStaticFiles(); // Habilita la configuración de archivos estáticos
 
+// Configurar la carpeta compartida
 var sharedImagesPath = @"C:\SharedImages";
 if (!Directory.Exists(sharedImagesPath))
 {
@@ -72,6 +70,12 @@ app.UseStaticFiles(new StaticFileOptions
     FileProvider = new PhysicalFileProvider(sharedImagesPath),
     RequestPath = "/SharedImages"
 });
+
+app.UseRouting();
+
+// Asegúrate de que esto esté antes de UseAuthorization
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",

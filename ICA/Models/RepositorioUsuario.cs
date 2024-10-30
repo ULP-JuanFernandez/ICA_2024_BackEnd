@@ -77,7 +77,7 @@ namespace ICA.Models
                                 Correo = reader.GetString(3),
                                 Rol = reader.GetString(4),
                                 Clave = reader.GetString(5),
-                                Salt = (byte[])reader[6], // Asumiendo que el Salt es VARBINARY
+                                Salt=((byte[])reader[6]),
                                 FechaCreacion = reader.GetDateTime(7),
                                 FechaModificacion = reader.GetDateTime(8),
                                 Estado = reader.GetByte(9)
@@ -229,9 +229,37 @@ namespace ICA.Models
             return resultado;
         }
 
-        internal int Modificacion(UsuarioEditViewModel usuario)
+        public Usuario ObtenerPorEmail(string correo)
         {
-            throw new NotImplementedException();
+            Usuario u = null;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string sql = $" SELECT Id, Nombre, Apellido, Correo, Clave, Rol, Salt " +
+                             $"	FROM Usuario "+
+                             $" WHERE Correo = @correo";
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.CommandType = CommandType.Text;
+                    command.Parameters.Add("@correo", SqlDbType.VarChar).Value = correo;
+                    connection.Open();
+                    var reader = command.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        u = new Usuario
+                        {
+                            Id = reader.GetInt32(0),
+                            Nombre = reader.GetString(1),
+                            Apellido = reader.GetString(2),
+                            Correo = reader.GetString(3),
+                            Clave = reader.GetString(4),
+                            Rol = reader.GetString(5),
+                            Salt = (byte[])reader[6],
+                        };
+                    }
+                    connection.Close();
+                }
+            }
+            return u;
         }
     }
 }

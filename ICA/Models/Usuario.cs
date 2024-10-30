@@ -23,6 +23,7 @@ namespace ICA.Models
 
         [Required(ErrorMessage = "La contraseña es obligatoria.")]
         [StringLength(255, ErrorMessage = "La contraseña no puede tener más de 255 caracteres.")]
+        [RegularExpression(@"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$", ErrorMessage = "La contraseña debe tener al menos 8 caracteres, incluyendo una letra mayúscula, una minúscula y un número.")]
         public string Clave { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "El rol es obligatorio.")]
@@ -32,17 +33,19 @@ namespace ICA.Models
 
         public DateTime FechaCreacion { get; set; } = DateTime.UtcNow;
 
-        public DateTime FechaModificacion { get; set; } = DateTime.UtcNow; // Setter privado
+        public DateTime FechaModificacion { get; set; } = DateTime.UtcNow;
 
-        public byte[] Salt { get; set; } = new byte[16]; // Inicializado a un array vacío
-
+        public byte[] Salt { get; internal set; } = new byte[16];
         [Required]
         public byte Estado { get; set; } = 1;
 
-        // Método para actualizar la fecha de modificación
         public void ActualizarFechaModificacion()
         {
             FechaModificacion = DateTime.UtcNow;
+        }
+        public void EstablecerSalt(byte[] salt)
+        {
+            Salt = salt;
         }
     }
 }

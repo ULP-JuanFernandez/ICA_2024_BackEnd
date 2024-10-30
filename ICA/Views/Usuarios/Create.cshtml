@@ -4,37 +4,60 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Crear Usuario</h1>
 
-<h4>Usuario</h4>
+<h4>Detalles del Usuario</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="row justify-content-center">
+    <div class="col-md-6">
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+            <!-- Campo Nombre -->
             <div class="form-group">
-                <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
+                <label asp-for="Nombre" class="control-label">
+                    <i class="bi bi-person-fill"></i> Nombre
+                </label>
+                <input asp-for="Nombre" class="form-control" aria-describedby="nombreHelp" />
+                <small id="nombreHelp" class="form-text text-muted">Ingrese el nombre completo del usuario.</small>
                 <span asp-validation-for="Nombre" class="text-danger"></span>
             </div>
+
+            <!-- Campo Apellido -->
             <div class="form-group">
-                <label asp-for="Apellido" class="control-label"></label>
-                <input asp-for="Apellido" class="form-control" />
+                <label asp-for="Apellido" class="control-label">
+                    <i class="bi bi-person-badge"></i> Apellido
+                </label>
+                <input asp-for="Apellido" class="form-control" aria-describedby="apellidoHelp" />
+                <small id="apellidoHelp" class="form-text text-muted">Ingrese el apellido del usuario.</small>
                 <span asp-validation-for="Apellido" class="text-danger"></span>
             </div>
+
+            <!-- Campo Correo -->
             <div class="form-group">
-                <label asp-for="Correo" class="control-label"></label>
-                <input asp-for="Correo" class="form-control" />
+                <label asp-for="Correo" class="control-label">
+                    <i class="bi bi-envelope-fill"></i> Correo Electrónico
+                </label>
+                <input asp-for="Correo" class="form-control" aria-describedby="correoHelp" />
+                <small id="correoHelp" class="form-text text-muted">Ejemplo: usuario@dominio.com</small>
                 <span asp-validation-for="Correo" class="text-danger"></span>
             </div>
+
+            <!-- Campo Clave -->
             <div class="form-group">
-                <label asp-for="Clave" class="control-label"></label>
-                <input asp-for="Clave" class="form-control" />
+                <label asp-for="Clave" class="control-label">
+                    <i class="bi bi-key-fill"></i> Contraseña
+                </label>
+                <input asp-for="Clave" class="form-control" aria-describedby="claveHelp" type="password" />
+                <small id="claveHelp" class="form-text text-muted">Debe tener al menos 8 caracteres.</small>
                 <span asp-validation-for="Clave" class="text-danger"></span>
             </div>
+
+            <!-- Campo Rol -->
             <div class="form-group">
-                <label asp-for="Rol" class="control-label"></label>
+                <label asp-for="Rol" class="control-label">
+                    <i class="bi bi-person-gear-fill"></i> Rol
+                </label>
                 <select asp-for="Rol" class="form-control">
                     <option value="admin">Admin</option>
                     <option value="usuario">Usuario</option>
@@ -43,31 +66,40 @@
                 <span asp-validation-for="Rol" class="text-danger"></span>
             </div>
 
-
+            <!-- Campo Estado -->
             <div class="form-group">
-                <label class="control-label">Estado</label>
-                <div>
-                    <label>
-
-                        <input asp-for="Estado" type="radio" value="1" checked /> Activo
-                    </label>
-                    <label>
-                        <input asp-for="Estado" type="radio" value="0" /> Inactivo
-                    </label>
+                <label class="control-label">
+                    <i class="bi bi-toggle-on"></i> Estado
+                </label>
+                <div class="form-check">
+                    <input asp-for="Estado" type="radio" value="1" id="estadoActivo" class="form-check-input" checked />
+                    <label for="estadoActivo" class="form-check-label">Activo</label>
+                </div>
+                <div class="form-check">
+                    <input asp-for="Estado" type="radio" value="0" id="estadoInactivo" class="form-check-input" />
+                    <label for="estadoInactivo" class="form-check-label">Inactivo</label>
                 </div>
                 <span asp-validation-for="Estado" class="text-danger"></span>
             </div>
+
+            <!-- Botón de Enviar -->
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-circle"></i> Crear
+                </button>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="mt-3">
+    <a asp-action="Index" class="btn btn-secondary">
+        <i class="bi bi-arrow-left"></i> Volver a la lista
+    </a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
